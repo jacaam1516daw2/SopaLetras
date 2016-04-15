@@ -64,14 +64,26 @@ $(document).ready(function () {
             content += '</tr>';
         }
 
-
-        /*for (i = 0; i < palabra.length(); i++) {
-            content += '<tr><td>' + palabra.charAt(i).toUpperCase() + '</td></tr>';
-        }*/
-
         content += '</table>';
 
         $("#sopa").html(content);
+
+
+        var arrayNumbersAleatori = [];
+
+        for (r = 0; r < arrayWords.length; r++) {
+            var aleatoriPosition = Math.floor(Math.random() * (alto - 0)) + 0;
+
+            while ($.inArray(aleatoriPosition, arrayNumbersAleatori) !== -1) {
+                aleatoriPosition = Math.floor(Math.random() * (alto - 0)) + 0;
+            }
+            arrayNumbersAleatori.push(aleatoriPosition);
+
+            for (z = 0; z < arrayWords[r].length; z++) {
+                $("#" + aleatoriPosition + z).text(arrayWords[r].charAt(z));
+
+            }
+        }
 
         $('td').click(function () {
             $(this).css('backgroundColor', '#ff0000');
