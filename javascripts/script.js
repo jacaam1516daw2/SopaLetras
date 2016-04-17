@@ -41,6 +41,8 @@ $(document).ready(function () {
         isAcertada: 0
     };
 
+    $('.CuentaAtras').hide();
+    sessionStorage.clear();
     /*
      * click para guardar cada plabra
      */
@@ -70,6 +72,8 @@ $(document).ready(function () {
      * Funcion que pinta la sopa de letras
      */
     $('#add-play').click(function () {
+        cronometro();
+        $('.CuentaAtras').show();
         $('#words').hide();
         var selectedWord = "";
         var palabras = arrayWords.length;
@@ -105,7 +109,7 @@ $(document).ready(function () {
             /*
              * Primera palabra
              */
-            if (r == 0 || r == 2) {
+            if (r == 0 || r == 3) {
                 for (f = 0; f < arrayWords[r].length; f++) {
                     var xa = "";
                     if (r == 0) {
@@ -170,15 +174,17 @@ $(document).ready(function () {
                 notifyInfo('No vamos bien!!!', 500, 3000, 'KO');
             } else {
                 for (var key in sessionStorage) {
-                    var infoPalabra = JSON.parse(sessionStorage.getItem(key));
-                    if (selectedWord == infoPalabra.palabra) {
-                        infoPalabra = JSON.parse(sessionStorage.getItem(infoPalabra.palabra));
-                        infoPalabra.isAcertada = 1;
-                        sessionStorage.setItem(infoPalabra.palabra, JSON.stringify(infoPalabra));
-                        $('td').css('backgroundColor', '#333333');
-                        palabrasAcertadas();
-                        notifyInfo('Has acertado!!!', 500, 3000, 'OK');
-                        selectedWord = '';
+                    if (key != 'arrayWords') {
+                        var infoPalabra = JSON.parse(sessionStorage.getItem(key));
+                        if (selectedWord == infoPalabra.palabra) {
+                            infoPalabra = JSON.parse(sessionStorage.getItem(infoPalabra.palabra));
+                            infoPalabra.isAcertada = 1;
+                            sessionStorage.setItem(infoPalabra.palabra, JSON.stringify(infoPalabra));
+                            $('td').css('backgroundColor', '#333333');
+                            palabrasAcertadas();
+                            notifyInfo('Has acertado!!!', 500, 3000, 'OK');
+                            selectedWord = '';
+                        }
                     }
                 }
             }
@@ -187,10 +193,12 @@ $(document).ready(function () {
              */
             function palabrasAcertadas() {
                 for (var key in sessionStorage) {
-                    var infoPalabra = JSON.parse(sessionStorage.getItem(key));
-                    if (infoPalabra.isAcertada == 1) {
-                        for (d = 0; d < infoPalabra.posiciones.length; d++) {
-                            $(infoPalabra.posiciones[d]).css('backgroundColor', '#33cc33');
+                    if (key != 'arrayWords') {
+                        var infoPalabra = JSON.parse(sessionStorage.getItem(key));
+                        if (infoPalabra.isAcertada == 1) {
+                            for (d = 0; d < infoPalabra.posiciones.length; d++) {
+                                $(infoPalabra.posiciones[d]).css('backgroundColor', '#33cc33');
+                            }
                         }
                     }
                 }
@@ -214,7 +222,96 @@ $(document).ready(function () {
                     }, speed);
                 }, fadeSpeed);
             }
-
         });
     });
 });
+
+/*****************************************************************
+ ********************* INICIO Cronometro *************************
+ ******************************************************************/
+var inicio = 0;
+var timeout = 0;
+var result = "";
+var endTime = new Date().getTime() + (120 * 1000);
+
+/* Variable que contiene el tiempo restante */
+var tiempRestante = 15;
+
+function cronometro() {
+    /* Ejecutamos la funcion updateReloj() al cargar la pagina */
+    updateReloj();
+
+    if (timeout == 0) {
+        // iniciamos el proceso
+        inicio = new Date().getTime()
+        funcionando();
+    }
+}
+
+function funcionando() {
+    // obteneos la fecha actual
+    var actual = new Date().getTime();
+
+    // obtenemos la diferencia entre la fecha actual y la de inicio
+    var diff = new Date(actual - inicio);
+
+    // mostramos la diferencia entre la fecha actual y la inicial
+    result = LeadingZero(diff.getUTCHours()) + ":" + LeadingZero(diff.getUTCMinutes()) + ":" + LeadingZero(diff.getUTCSeconds());
+    // Indicamos que se ejecute esta función nuevamente dentro de 1 segundo
+    timeout = setTimeout("funcionando()", 1000);
+}
+
+/* Funcion que pone un 0 delante de un valor si es necesario */
+function LeadingZero(Time) {
+    return (Time < 10) ? "0" + Time : +Time;
+}
+
+function updateReloj() {
+    if (tiempRestante > 0) {
+        var Seconds = tiempRestante;
+
+        var Days = Math.floor(Seconds / 86400);
+        Seconds -= Days * 86400;
+
+        var Hours = Math.floor(Seconds / 3600);
+        Seconds -= Hours * (3600);
+
+        var Minutes = Math.floor(Seconds / 60);
+        Seconds -= Minutes * (60);
+
+        var TimeStr = ((Days > 0) ? Days + " dias " : "") + LeadingZero(Hours) + ":" + LeadingZero(Minutes) + ":" + LeadingZero(Seconds);
+        /* Este muestra el total de hora, aunque sea superior a 24 horas */
+
+        document.getElementById("CuentaAtras").innerHTML = TimeStr;
+        if (endTime <= new Date().getTime()) {
+            document.getElementById("CuentaAtras").innerHTML = "00:00:00";
+        } else {
+            /* Restamos un segundo al tiempo restante */
+            tiempRestante -= 1;
+            /* Ejecutamos nuevamente la función al pasar 1000 milisegundos (1 segundo) */
+            setTimeout("updateReloj()", 1000);
+        }
+    } else {
+        var puntos = 0;
+        for (var key in sessionStorage) {
+            if (key != 'arrayWords') {
+                var infoPalabra = JSON.parse(sessionStorage.getItem(key));
+                if (infoPalabra.isAcertada == 1) {
+                    puntos = puntos + 50;
+                    for (t = 0; t < infoPalabra.posiciones.length; t++) {
+                        $(infoPalabra.posiciones[t]).css('backgroundColor', '#33cc33');
+                    }
+                } else {
+                    for (g = 0; g < infoPalabra.posiciones.length; g++) {
+                        $(infoPalabra.posiciones[g]).css('backgroundColor', '#ffff99');
+                    }
+                }
+            }
+        }
+        $("#points").html("Puntos: " + puntos);
+    }
+}
+
+/*****************************************************************
+ ********************* FIN Cronometro *************************
+ ******************************************************************/
