@@ -47,7 +47,7 @@ $(document).ready(function () {
      * click para guardar cada plabra
      */
     $('#add-word').click(function () {
-        var newWord = $('#word').val();
+        var newWord = $('#word').val().toUpperCase();
         if (newWord != '') {
             arrayWords = [];
             /*
