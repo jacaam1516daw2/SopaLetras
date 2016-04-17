@@ -8,3 +8,11 @@
      height: 100 %;
      background - color: rgba(0, 0, 0, 0.9);
  }
+ .notifyKO {
+     width: 250px;
+     background-color: #ff3333;
+ }
+ .notifyOK {
+     width: 250px;
+     background-color: #80ff80;
+ }

@@ -105,23 +105,17 @@ $(document).ready(function () {
             /*
              * Primera palabra
              */
-            if (r == 0) {
+            if (r == 0 || r == 2) {
                 for (f = 0; f < arrayWords[r].length; f++) {
-                    var xa = f + 1 + "" + ancho - 1;
+                    var xa = "";
+                    if (r == 0) {
+                        xa = f + 1 + "" + ancho - 1;
+                    } else {
+                        xa = f + 3 + "" + ancho - 3;
+                    }
                     $("#" + xa).text(arrayWords[r].charAt(f));
                     pWord += arrayWords[r].charAt(f);
                     infoPalabra.posiciones.push("#" + xa);
-                }
-                guardaInfoPalabra(infoPalabra);
-            } else if (r == 1) {
-                /*
-                 * Segunda palabra
-                 */
-                for (s = 0; s < arrayWords[r].length; s++) {
-                    var xs = s + 3 + "" + ancho - 3;
-                    $("#" + xs).text(arrayWords[r].charAt(s));
-                    pWord += arrayWords[r].charAt(s);
-                    infoPalabra.posiciones.push("#" + xs);
                 }
                 guardaInfoPalabra(infoPalabra);
             } else {
@@ -173,6 +167,7 @@ $(document).ready(function () {
                 selectedWord = '';
                 $('td').css('backgroundColor', '#333333');
                 palabrasAcertadas();
+                notifyInfo('No vamos bien!!!', 500, 3000, 'KO');
             } else {
                 for (var key in sessionStorage) {
                     var infoPalabra = JSON.parse(sessionStorage.getItem(key));
@@ -182,6 +177,8 @@ $(document).ready(function () {
                         sessionStorage.setItem(infoPalabra.palabra, JSON.stringify(infoPalabra));
                         $('td').css('backgroundColor', '#333333');
                         palabrasAcertadas();
+                        notifyInfo('Has acertado!!!', 500, 3000, 'OK');
+                        selectedWord = '';
                     }
                 }
             }
@@ -198,6 +195,26 @@ $(document).ready(function () {
                     }
                 }
             }
+
+            function notifyInfo(msg, speed, fadeSpeed, type) {
+                $('.notify' + type).remove();
+                if (typeof fade != "undefined") {
+                    clearTimeout(fade);
+                }
+                $('body').append('<div class="notify' + type + '" style="display:none;position:fixed;left:10"><p>' + msg + '</p></div>');
+                notifyHeight = $('.notify' + type).outerHeight();
+                $('.notify' + type).css('top', -notifyHeight).animate({
+                    top: 10,
+                    opacity: 'toggle'
+                }, speed);
+                fade = setTimeout(function () {
+                    $('.notify' + type).animate({
+                        top: notifyHeight + 10,
+                        opacity: 'toggle'
+                    }, speed);
+                }, fadeSpeed);
+            }
+
         });
     });
 });
