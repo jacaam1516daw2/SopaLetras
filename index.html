@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html manifest="sletras.appcache">
+<!--<html manifest="sletras.appcache">-->
+<html>
 
 <head>
     <meta charset="utf-8" />
@@ -11,27 +12,24 @@
 </head>
 
 <body>
-    <div id="words">
+    <div id="initWords">
         <h2>Indica las plabras para juegar</h2>
         <input id="word" type="text" name="word" maxlength="20" />
-        <input id="add-word" class="btn" type="submit" value="Añadir" class="btn" />
-        <input id="add-play" class="btn" type="submit" value="Jugar" class="btn" />
+        <input id="add-word" type="submit" value="Añadir" />
+        <input id="add-play" type="submit" value="Jugar" />
         <br>
         <ul id="words"></ul>
     </div>
 
     <div id="sopa"></div>
 
-    <div class="CuentaAtras">
+    <div class="contraReloj">
         <h3>Te queda: </h3>
         <h2 id='CuentaAtras'></h2>
         <br>
         <h2 id="points"></h2>
         <br>
-        <form>
-            <a href="index.html">
-                <input class="btn" type="button" value="Inicio" /> </a>
-        </form>
+        <input id="init-play" type="submit" value="Inicio" />
     </div>
 </body>
 

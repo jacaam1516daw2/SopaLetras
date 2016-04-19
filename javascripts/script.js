@@ -41,8 +41,9 @@ $(document).ready(function () {
         isAcertada: 0
     };
 
-    $('.CuentaAtras').hide();
+    $('.contraReloj').hide();
     sessionStorage.clear();
+
     /*
      * click para guardar cada plabra
      */
@@ -71,10 +72,16 @@ $(document).ready(function () {
     /*
      * Funcion que pinta la sopa de letras
      */
+    $('#init-play').click(function () {
+        window.location.href = 'index.html';
+    });
+    /*
+     * Funcion que pinta la sopa de letras
+     */
     $('#add-play').click(function () {
         cronometro();
-        $('.CuentaAtras').show();
-        $('#words').hide();
+        $('.contraReloj').show();
+        $('#initWords').hide();
         var selectedWord = "";
         var palabras = arrayWords.length;
         var alto = palabras * 2 + 6;
@@ -308,6 +315,8 @@ function updateReloj() {
                 }
             }
         }
+        $('#CuentaAtras').text() = "00:00:00";
+        $('#CuentaAtras').css('color', '#ff0000');
         $("#points").html("Puntos: " + puntos);
     }
 }

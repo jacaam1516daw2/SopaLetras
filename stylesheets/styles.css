@@ -19,7 +19,7 @@
  #points {
      color: #80ff80;
  }
- .btn {
+ input[type=submit] {
      background: #3498db;
      background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
      background-image: -moz-linear-gradient(top, #3498db, #2980b9);
@@ -33,7 +33,7 @@
      padding: 0px 10px 0px 10px;
      text-decoration: none;
  }
- .btn:hover {
+ input[type=submit]:hover {
      background: #3cb0fd;
      background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
      background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
