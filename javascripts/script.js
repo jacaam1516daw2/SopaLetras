@@ -32,7 +32,7 @@ $(document).ready(function () {
     var maxlengthWord = 0;
     var arrayAceertadas = [];
 
-    /*
+    /**
      * Objecto donde vamos a guardar la información de la plabra
      */
     var infoPalabra = {
@@ -44,14 +44,14 @@ $(document).ready(function () {
     $('.contraReloj').hide();
     sessionStorage.clear();
 
-    /*
+    /**
      * click para guardar cada plabra
      */
     $('#add-word').click(function () {
         var newWord = $('#word').val().toUpperCase();
         if (newWord != '') {
             arrayWords = [];
-            /*
+            /**
              * Guardamos el array de palabras en sessionStorage
              */
             for (var key in sessionStorage) {
@@ -69,13 +69,13 @@ $(document).ready(function () {
         }
     });
 
-    /*
+    /**
      * Funcion que pinta la sopa de letras
      */
     $('#init-play').click(function () {
         window.location.href = 'index.html';
     });
-    /*
+    /**
      * Funcion que pinta la sopa de letras
      */
     $('#add-play').click(function () {
@@ -87,7 +87,7 @@ $(document).ready(function () {
         var alto = palabras * 2 + 6;
         var ancho = palabras * 2 + 6;
         var content = '<table border=1 id=sletras align= center>';
-        /*
+        /**
          * llenamos la tabla de letras aleatorias
          */
         for (x = 0; x < alto; x++) {
@@ -100,20 +100,20 @@ $(document).ready(function () {
         }
         content += '</table>';
 
-        /*
+        /**
          * Pintamos la tabla con todas la letras aleatorias
          */
         $("#sopa").html(content);
 
 
         var arrayNumbersAleatori = [];
-        /*
+        /**
          * Pintamos las plabras en la tabla de forma aleatoria pero con cierto control y coherencia para que no se sobreescriban las posiciones
          */
         for (r = 0; r < arrayWords.length; r++) {
             var pWord = "";
             var posiWords = [];
-            /*
+            /**
              * Primera palabra
              */
             if (r == 0 || r == 3) {
@@ -130,12 +130,12 @@ $(document).ready(function () {
                 }
                 guardaInfoPalabra(infoPalabra);
             } else {
-                /*
+                /**
                  * El resto de palabras horizontales pero de forma aleatoria
                  */
                 var aleatoriPosition = Math.floor(Math.random() * (alto - 0)) + 0;
 
-                /*
+                /**
                  * Comrpobamos que la posicion donde vamos a escribir no se haya utilzado ya
                  * arrayNumbersAleatori contiene la primera de las posiciones donde se ha escrito
                  */
@@ -155,7 +155,7 @@ $(document).ready(function () {
             }
         }
 
-        /*
+        /**
          * Esta función guarda el objeto infoPalabra en sessionStorage
          */
         function guardaInfoPalabra(infoPalabra) {
@@ -164,7 +164,7 @@ $(document).ready(function () {
             infoPalabra.posiciones = [];
         }
 
-        /*
+        /**
          * Función click que comprueba cuando el usuario pulsa con el ratón una letra
          * Va guardando las letras que se van pulsando y lo va comparando con las palbras que se ha de acertar
          * en caso de que coincidan las pinta de verde. Si el numero de letras que se van pulsando supera en logitud
@@ -195,7 +195,7 @@ $(document).ready(function () {
                     }
                 }
             }
-            /*
+            /**
              * Esta función pinta las plabras acertadas
              */
             function palabrasAcertadas() {
@@ -233,7 +233,7 @@ $(document).ready(function () {
     });
 });
 
-/*****************************************************************
+/******************************************************************
  ********************* INICIO Cronometro *************************
  ******************************************************************/
 var inicio = 0;
@@ -241,34 +241,50 @@ var timeout = 0;
 var result = "";
 var endTime = new Date().getTime() + (120 * 1000);
 
-/* Variable que contiene el tiempo restante */
+/**
+ * Variable que contiene el tiempo restante
+ */
 var tiempRestante = 15;
 
 function cronometro() {
-    /* Ejecutamos la funcion updateReloj() al cargar la pagina */
+    /**
+     * Ejecutamos la funcion updateReloj() al cargar la pagina
+     */
     updateReloj();
 
     if (timeout == 0) {
-        // iniciamos el proceso
+        /**
+         * iniciamos el proceso
+         */
         inicio = new Date().getTime()
         funcionando();
     }
 }
 
 function funcionando() {
-    // obteneos la fecha actual
+    /**
+     *  obteneos la fecha actual
+     */
     var actual = new Date().getTime();
 
-    // obtenemos la diferencia entre la fecha actual y la de inicio
+    /**
+     * obtenemos la diferencia entre la fecha actual y la de inicio
+     */
     var diff = new Date(actual - inicio);
 
-    // mostramos la diferencia entre la fecha actual y la inicial
+    /**
+     *  mostramos la diferencia entre la fecha actual y la inicial
+     */
     result = LeadingZero(diff.getUTCHours()) + ":" + LeadingZero(diff.getUTCMinutes()) + ":" + LeadingZero(diff.getUTCSeconds());
-    // Indicamos que se ejecute esta función nuevamente dentro de 1 segundo
+    /**
+     *  Indicamos que se ejecute esta función nuevamente dentro de 1 segundo
+     */
     timeout = setTimeout("funcionando()", 1000);
 }
 
-/* Funcion que pone un 0 delante de un valor si es necesario */
+/**
+ * Funcion que pone un 0 delante de un valor si es necesario
+ */
 function LeadingZero(Time) {
     return (Time < 10) ? "0" + Time : +Time;
 }
@@ -287,15 +303,21 @@ function updateReloj() {
         Seconds -= Minutes * (60);
 
         var TimeStr = ((Days > 0) ? Days + " dias " : "") + LeadingZero(Hours) + ":" + LeadingZero(Minutes) + ":" + LeadingZero(Seconds);
-        /* Este muestra el total de hora, aunque sea superior a 24 horas */
+        /**
+         * Este muestra el total de hora, aunque sea superior a 24 horas
+         */
 
         document.getElementById("CuentaAtras").innerHTML = TimeStr;
         if (endTime <= new Date().getTime()) {
             document.getElementById("CuentaAtras").innerHTML = "00:00:00";
         } else {
-            /* Restamos un segundo al tiempo restante */
+            /**
+             * Restamos un segundo al tiempo restante
+             */
             tiempRestante -= 1;
-            /* Ejecutamos nuevamente la función al pasar 1000 milisegundos (1 segundo) */
+            /**
+             * Ejecutamos nuevamente la función al pasar 1000 milisegundos (1 segundo)
+             */
             setTimeout("updateReloj()", 1000);
         }
     } else {
@@ -315,12 +337,12 @@ function updateReloj() {
                 }
             }
         }
-        $('#CuentaAtras').text() = "00:00:00";
+        document.getElementById("CuentaAtras").innerHTML = "00:00:00";
         $('#CuentaAtras').css('color', '#ff0000');
         $("#points").html("Puntos: " + puntos);
     }
 }
 
-/*****************************************************************
+/******************************************************************
  ********************* FIN Cronometro *************************
  ******************************************************************/
