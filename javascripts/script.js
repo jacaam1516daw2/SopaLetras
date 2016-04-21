@@ -70,7 +70,7 @@ $(document).ready(function () {
     });
 
     /**
-     * Funcion que pinta la sopa de letras
+     * Funcion que redirige al inicio
      */
     $('#init-play').click(function () {
         window.location.href = 'index.html';
